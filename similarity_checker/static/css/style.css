@@ -1,0 +1,11 @@
+.text-decoration-none:hover {
+    text-decoration: none;
+}
+
+.fileinput-remove, .fileinput-upload{
+	display: none;
+}
+
+ul>li>a.active {
+    color: black !important;
+}

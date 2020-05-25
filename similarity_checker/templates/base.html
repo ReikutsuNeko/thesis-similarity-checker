@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similarity Checker</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/fileinput.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/font-awesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    
+    <!-- Header -->
+    <div class="container-fluid">
+        <div class="row p-4 bg-dark text-white">
+        <div class="col">
+            <h1><a href="" class="text-white text-decoration-none">Similarity Checker</a></h1>        
+        </div>
+        <div class="col ml-5 mt-auto mb-auto">
+            {% if g.user %}
+                <div class="float-right">
+                    <span class="mr-3">Hi, {{ g.user['name'] }}</span>
+                    <a href="/auth/logout">
+                        <button type="button" class="btn btn-outline-light">Log Out</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="float-right">
+                    <button type="button" class="btn btn-outline-light mr-3" data-toggle="modal" data-target="#modalLogin">Log In</button>
+                    <button type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#modalRegister">Register</button>
+                </div>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+    
+    {% if g.user %}
+    {% else %}
+        <!-- Log In Modal -->
+        <div class="modal" id="modalLogin">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <div class="modal-header">
+                <h4 class="modal-title">Log In</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form class="form-group" id="loginForm" method="POST">                
+                    <div class="modal-body">
+                        <label for="emailLogin">Email</label>
+                        <input type="email" class="form-control" placeholder="Enter email" name="emailLogin" id="emailLogin" required>
+
+                        <label for="passwordLogin" class="mt-4">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter password" name="passwordLogin" id="passwordLogin" required>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-light" id="loginButton">Log In</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+                
+            </div>
+            </div>
+        </div>
+        
+        <!-- Register Modal -->
+        <div class="modal" id="modalRegister">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <div class="modal-header">
+                <h4 class="modal-title">Register</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form class="form-group" id="registerForm" method="POST">
+                    <div class="modal-body">
+                        <label for="nameRegister">Name</label>
+                        <input type="text" class="form-control" placeholder="Enter name" name="nameRegister" id="nameRegister" required>
+
+                        <label for="emailRegister" class="mt-4">Email</label>
+                        <input type="email" class="form-control" placeholder="Enter email" name="emailRegister" id="emailRegister" required>
+
+                        <label for="passwordRegister" class="mt-4">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter password" name="passwordRegister" id="passwordRegister" required>
+
+                        <label for="passwordConfirmation" class="mt-4">Confirm Password</label>
+                        <input type="password" class="form-control" placeholder="Confirm password" name="passwordConfirmation" id="passwordConfirmation" required>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-light" id="registerButton">Register</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Tabbed Menu -->
+    <ul class="nav nav-tabs pl-4 pr-4 bg-dark" role="tablist">
+        <li class="nav-item mr-2">
+            <a class="nav-link text-white active" data-toggle="tab" href="#menu1">Check Similarity Between Documents</a>
+        </li>
+        <li class="nav-item mr-2">
+            <a class="nav-link text-white" data-toggle="tab" href="#menu2">Check Similarity With Database</a>
+        </li>
+        <li class="nav-item" style="cursor: pointer !important;">
+            {% if g.user %}
+                <a class="nav-link text-white" data-toggle="tab" href="#history">History</a>
+            {% else %}
+                <a class="nav-link text-white" data-toggle="modal" data-target="#modalNotLoggedIn">History</a>
+            {% endif %}
+        </li>
+    </ul>
+    
+    <!-- Tab panes -->
+    <div class="tab-content pl-4 pr-4">
+        <!-- menu 1 -->
+        <div id="menu1" class="container-fluid tab-pane active"><br>
+            <!-- Check similarity between docum -->
+            <div>
+                <h3 class="mb-3">Check Similarity Between Documents</h3>
+                <div class="row">
+                    <div class="col">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input id="files" type="file" multiple class="file" data-overwrite-initial="false">
+                                <button type="submit" class="btn btn-primary btn-block mt-3">Check Similarity</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Result -->
+            <div>
+                <h3 class="mt-3 mb-3">Result</h3>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">
+                                        <span>Suspect Document</span>
+                                    </th>
+                                    <th class="text-center">
+                                        <span>Document Name</span>
+                                    </th>
+                                    <th class="text-center">
+                                        <span>Percentage</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span>Dummy suspect doc name</span>
+                                    </td>
+                                    <td>
+                                        <span>Dummy doc name</span>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-danger" style="width: 90%;">90%</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Dummy suspect doc name</span>
+                                    </td>
+                                    <td>
+                                        <span>Dummy doc name</span>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width: 50%;">50%</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="float-right">
+                            <a href="">
+                                <button class="btn btn-success">
+                                    <span class="fa fa-file-download mr-1"></span>
+                                    <span>Export as PDF</span>
+                                </button>
+                            </a>
+                            {% if g.user %}
+                            {% else %}
+                                <a>
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalNotLoggedIn">
+                                        <span class="fa fa-history mr-1"></span>
+                                        <span>Save to History</span>
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- menu 2 -->
+        <div id="menu2" class="container-fluid tab-pane fade"><br>
+            <!-- Check similarity with database -->
+            <div>
+                <h3 class="mb-3">Check Similarity With Database</h3>
+                <div class="row">
+                    <div class="col">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input id="files1" type="file" multiple class="file" data-overwrite-initial="false">
+                                <button type="submit" class="btn btn-primary btn-block mt-3">Check Similarity</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Result -->
+            <div>
+                <h3 class="mt-3 mb-3">Result</h3>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">
+                                        <span>Suspect Document</span>
+                                    </th>
+                                    <th class="text-center">
+                                        <span>Source Document</span>
+                                    </th>
+                                    <th class="text-center">
+                                        <span>Percentage</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span>Dummy suspect doc name</span>
+                                    </td>
+                                    <td>
+                                        <span>Dummy doc name</span>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-danger" style="width: 90%;">90%</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Dummy suspect doc name</span>
+                                    </td>
+                                    <td>
+                                        <span>Dummy doc name</span>
+                                    </td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" style="width: 50%;">50%</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="float-right">
+                            <a href="">
+                                <button class="btn btn-success">
+                                    <span class="fa fa-file-download mr-1"></span>
+                                    <span>Export as PDF</span>
+                                </button>
+                            </a>
+                            {% if g.user %}
+                            {% else %}
+                                <a>
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalNotLoggedIn">
+                                        <span class="fa fa-history mr-1"></span>
+                                        <span>Save to History</span>
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- history -->
+        <div id="history" class="container-fluid tab-pane fade"><br>
+            <h3>History</h3>
+            <!-- History table -->
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <h3><small>Sunday, 12 March 2020</small></h3>
+                    </div>
+                </div>
+
+                <!-- table -->
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <!-- table -->
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="text-center">
+                                            <span>Suspect Document</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Source Document</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Percentage</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span>Dummy suspect doc name</span>
+                                        </td>
+                                        <td>
+                                            <span>Dummy doc name</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" style="width: 90%;">90%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>Dummy suspect doc name</span>
+                                        </td>
+                                        <td>
+                                            <span>Dummy doc name</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width: 50%;">50%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="float-right">
+                                <a href="">
+                                    <button class="btn btn-success">
+                                        <span class="fa fa-file-download mr-1"></span>
+                                        <span>Export as PDF</span>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    {% if g.user %}
+    {% else %}
+        <!-- Modal not logged in -->
+        <div class="modal" id="modalNotLoggedIn">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Oops!!</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        To use this feature, you have to log in first
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</body>
+
+<!-- script -->
+<div>
+    <script src="{{ url_for('static', filename='bootstrap/js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/font-awesome/js/all.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/fileinput.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/additional.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/additional_ajax.js') }}"></script>
+</div>
+    
+</html>
