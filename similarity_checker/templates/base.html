@@ -48,13 +48,17 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
-                <form class="form-group" id="loginForm" method="POST">                
+                <form class="form-group" id="loginForm">                
                     <div class="modal-body">
                         <label for="emailLogin">Email</label>
                         <input type="email" class="form-control" placeholder="Enter email" name="emailLogin" id="emailLogin" required>
 
                         <label for="passwordLogin" class="mt-4">Password</label>
                         <input type="password" class="form-control" placeholder="Enter password" name="passwordLogin" id="passwordLogin" required>
+
+                        <div>
+                            <span id="errorLogin"></span>    
+                        </div>
                     </div>
                     
                     <div class="modal-footer">
@@ -77,7 +81,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
-                <form class="form-group" id="registerForm" method="POST">
+                <form class="form-group" id="registerForm">
                     <div class="modal-body">
                         <label for="nameRegister">Name</label>
                         <input type="text" class="form-control" placeholder="Enter name" name="nameRegister" id="nameRegister" required>

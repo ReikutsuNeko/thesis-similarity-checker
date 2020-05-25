@@ -10,71 +10,79 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@bp.route('/register', methods=('GET', 'POST'))
+@bp.route('/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        error = None
+    error = None
+    jsonData = request.get_json(force=True)
 
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        password_confirmation = request.form['password_confirmation']
+    name = jsonData['name']
+    email = jsonData['email']
+    password = jsonData['password']
+    password_confirmation = jsonData['passwordConfirmation']
 
-        if not name:
-            error = 'Username required.'
-        elif not email:
-            error = 'Email required'
-        elif not password:
-            error = 'Password required.'
-        elif not password_confirmation:
-            error = 'You need to confirm your password'
-        elif password != password_confirmation:
-            error = "Password didn't match"
+    if not name:
+        error = 'Username required.'
+    elif not email:
+        error = 'Email required'
+    elif not password:
+        error = 'Password required.'
+    elif not password_confirmation:
+        error = 'You need to confirm your password'
+    elif password != password_confirmation:
+        error = "Password didn't match"
 
-        if error is None:
-            user = User(name=name, email=email, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
-            db.session.add(user)
-            db.session.commit()
-            session['user_id'] = user.id
-            return jsonify(status="success", url="/")
+    user = User.query.filter_by(email=email).first()
 
-        return jsonify(status="failed", error= error)
+    if user.email == email:
+        error = "Email already exists"
+
+    if error is None:
+        user = User(name=name, email=email, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
+        db.session.add(user)
+        db.session.commit()
+        session['user_id'] = user.id
+        g.user = User.query.filter_by(email=email).first()
+        return jsonify(status="success", error=None)
+
+    return jsonify(status="failed", error=error)
+        
 
 @bp.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        print("masuk")
-        error = None
+    error = None
+    jsonData = request.get_json(force=True)
 
-        email = request.form['email']
-        password = request.form['password']
+    email = jsonData['email']
+    password = jsonData['password']
 
-        user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()
 
-        if user is None:
-            error = "User not exists, Please register first"
+    if user is None:
+        error = "User not exists, Please register first"
+    else:
+        if check_password_hash(user.password, password) is True:
+            session['user_id'] = user.id
+            g.user = user
+            return jsonify(status="success", error=None)
         else:
-            if check_password_hash(user.password, password) is True:
-                session['user_id'] = user.id
-                return jsonify(status="success", url="/")
-            else:
-                error = "Password not match"
+            error = "Password not match"
 
-        return jsonify(status="failed", error= error)
+    return jsonify(status="failed", error=error)
+        
 
 @bp.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
 
-# @bp.before_app_request
-# def load_logged_in_user():
-#     user = session.get('user_id')
+@bp.before_app_request
+def load_logged_in_user():
+    user = session.get('user_id')
 
-#     if user is None:
-#         print('No User are logged in')
-#     else:
-#         print("User %s logged in".format(user))
+    if user is None:
+        g.user = None
+    else:
+        g.user = User.query.filter_by(id=session.get('user_id')).first()
 
 # def login_required(view):
 #     @functools.wraps(view)
