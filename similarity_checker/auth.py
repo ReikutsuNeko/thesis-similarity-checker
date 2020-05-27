@@ -2,6 +2,7 @@ from app import db
 
 from models import User
 import functools
+import uuid
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
@@ -45,7 +46,6 @@ def register():
         return jsonify(status="success", error=None)
 
     return jsonify(status="failed", error=error)
-        
 
 @bp.route('/login', methods=['POST'])
 def login():
@@ -69,7 +69,6 @@ def login():
 
     return jsonify(status="failed", error=error)
         
-
 @bp.route('/logout')
 def logout():
     session.clear()
@@ -80,6 +79,11 @@ def load_logged_in_user():
     user = session.get('user_id')
 
     if user is None:
+        if session.get('randId') is None:
+            randId = str(uuid.uuid4())
+            session['randId'] = randId
+        else:
+            print(session.get('randId'))
         g.user = None
     else:
         g.user = User.query.filter_by(id=session.get('user_id')).first()

@@ -56,9 +56,7 @@
                         <label for="passwordLogin" class="mt-4">Password</label>
                         <input type="password" class="form-control" placeholder="Enter password" name="passwordLogin" id="passwordLogin" required>
 
-                        <div>
-                            <span id="errorLogin"></span>    
-                        </div>
+                        <div class="mt-3" id="errorLogin"></div>
                     </div>
                     
                     <div class="modal-footer">
@@ -94,6 +92,8 @@
 
                         <label for="passwordConfirmation" class="mt-4">Confirm Password</label>
                         <input type="password" class="form-control" placeholder="Confirm password" name="passwordConfirmation" id="passwordConfirmation" required>
+
+                        <div class="mt-3" id="errorRegister"></div>
                     </div>
                     
                     <div class="modal-footer">
@@ -133,12 +133,20 @@
                 <h3 class="mb-3">Check Similarity Between Documents</h3>
                 <div class="row">
                     <div class="col">
-                        <form method="POST" enctype="multipart/form-data">
+                        <form method="POST" enctype="multipart/form-data" id="check1">
                             <div class="form-group">
-                                <input id="files" type="file" multiple class="file" data-overwrite-initial="false">
-                                <button type="submit" class="btn btn-primary btn-block mt-3">Check Similarity</button>
+                                <input id="check1_files" name="check1_files" type="file" multiple data-overwrite-initial="false">
                             </div>
                         </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h4>Note:</h4>
+                        <p>Make sure to upload all the files before checking</p>
+                        <a href="">
+                            <button type="submit" class="btn btn-primary btn-block mt-3" id="check1-btn">Check Similarity</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -224,12 +232,20 @@
                 <h3 class="mb-3">Check Similarity With Database</h3>
                 <div class="row">
                     <div class="col">
-                        <form method="POST" enctype="multipart/form-data">
+                        <form method="POST" enctype="multipart/form-data" id="check2">
                             <div class="form-group">
-                                <input id="files1" type="file" multiple class="file" data-overwrite-initial="false">
-                                <button type="submit" class="btn btn-primary btn-block mt-3">Check Similarity</button>
+                                <input id="check2_files" name="check2_files" type="file" multiple data-overwrite-initial="false">
                             </div>
                         </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h4>Note:</h4>
+                        <p>Make sure to upload all the files before checking</p>
+                        <a href="">
+                            <button type="submit" class="btn btn-primary btn-block mt-3" id="check1-btn">Check Similarity</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -422,6 +438,7 @@
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/font-awesome/js/all.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/fileinput.min.js') }}"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script> -->
     <script src="{{ url_for('static', filename='bootstrap/js/additional.js') }}"></script>
     <script src="{{ url_for('static', filename='js/additional_ajax.js') }}"></script>
 </div>

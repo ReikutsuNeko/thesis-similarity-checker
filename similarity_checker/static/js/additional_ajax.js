@@ -16,17 +16,24 @@ $(document).ready(function () {
         + "\"password\"" + ":\"" + data["passwordLogin"] + "\""
         + "}"
 
+        var url = window.origin + "/auth/login"
+
         $.ajax({
             type: "POST",
             global: false,
             async: true,
-            url: "http://127.0.0.1:5000/auth/login",
+            url: url,
             data: jsonData,
             dataType: "json",
             contentType: "application/json",
             success: function (response) {
                 if (response['status'] == "failed") {
-                    alert(response['error'])
+                    function showError() {
+                        var err = "<span class=\"text-danger\">"+response['error']+"</span"
+                        $("#errorLogin").append(err);
+                    }
+
+                    showError()
                 } else {
                     window.location.reload()
                 }
@@ -56,15 +63,22 @@ $(document).ready(function () {
         + "\"passwordConfirmation\"" + ":\"" + data["passwordConfirmation"] + "\""
         + "}";
 
+        var url = window.origin + "/auth/register"
+
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/auth/register",
+            url: url,
             data: jsonData,
             dataType: "json",
             contentType: "application/json",
             success: function (response) {
                 if (response['status'] == "failed") {
-                    alert(response['error'])
+                    function showError() {
+                        var err = "<span class=\"text-danger\">"+response['error']+"</span"
+                        $("#errorRegister").append(err);
+                    }
+
+                    showError()
                 } else {
                     window.location.reload()
                 }

@@ -1,55 +1,31 @@
+$(document).ready(function () {
 /*!
- * bootstrap-fileinput v4.4.7
+ * bootstrap-fileinput v5.0.1
  * http://plugins.krajee.com/file-input
  *
- * Font Awesome icon theme configuration for bootstrap-fileinput. Requires font awesome assets to be loaded.
+ * Font Awesome 5 icon theme configuration for bootstrap-fileinput. Requires font awesome 5 assets to be loaded.
  *
  * Author: Kartik Visweswaran
- * Copyright: 2014 - 2018, Kartik Visweswaran, Krajee.com
+ * Copyright: 2014 - 2019, Kartik Visweswaran, Krajee.com
  *
- * Licensed under the BSD 3-Clause
+ * Licensed under the BSD-3-Clause
  * https://github.com/kartik-v/bootstrap-fileinput/blob/master/LICENSE.md
- */
-(function ($) {
-    "use strict";
+ */!function(a){"use strict";a.fn.fileinputThemes.fas={fileActionSettings:{removeIcon:'<i class="fas fa-trash-alt"></i>',uploadIcon:'<i class="fas fa-upload"></i>',uploadRetryIcon:'<i class="fas fa-redo-alt"></i>',downloadIcon:'<i class="fas fa-download"></i>',zoomIcon:'<i class="fas fa-search-plus"></i>',dragIcon:'<i class="fas fa-arrows-alt"></i>',indicatorNew:'<i class="fas fa-plus-circle text-warning"></i>',indicatorSuccess:'<i class="fas fa-check-circle text-success"></i>',indicatorError:'<i class="fas fa-exclamation-circle text-danger"></i>',indicatorLoading:'<i class="fas fa-hourglass text-muted"></i>'},layoutTemplates:{fileIcon:'<i class="fas fa-file kv-caption-icon"></i> '},previewZoomButtonIcons:{prev:'<i class="fas fa-caret-left fa-lg"></i>',next:'<i class="fas fa-caret-right fa-lg"></i>',toggleheader:'<i class="fas fa-fw fa-arrows-alt-v"></i>',fullscreen:'<i class="fas fa-fw fa-arrows-alt"></i>',borderless:'<i class="fas fa-fw fa-external-link-alt"></i>',close:'<i class="fas fa-fw fa-times"></i>'},previewFileIcon:'<i class="fas fa-file"></i>',browseIcon:'<i class="fas fa-folder-open"></i>',removeIcon:'<i class="fas fa-trash-alt"></i>',cancelIcon:'<i class="fas fa-ban"></i>',pauseIcon:'<i class="fas fa-pause"></i>',uploadIcon:'<i class="fas fa-upload"></i>',msgValidationErrorIcon:'<i class="fas fa-exclamation-circle"></i> '}}(window.jQuery);
 
-    $.fn.fileinputThemes.fa = {
-        fileActionSettings: {
-            showUpload: false,
-            showZoom: false,
-            removeIcon: '<i class="fa fa-trash"></i>',
-            indicatorSuccess: '<i class="fa fa-check-circle text-success"></i>',
-            indicatorError: '<i class="fa fa-exclamation-circle text-danger"></i>',
-            indicatorLoading: '<i class="fa fa-hourglass text-muted"></i>'
-        },
-        layoutTemplates: {
-            fileIcon: '<i class="fa fa-file kv-caption-icon"></i> '
-        },
-        previewFileIcon: '<i class="fa fa-file"></i>',
-        browseIcon: '<i class="fa fa-folder-open"></i>',
-        removeIcon: '<i class="fa fa-trash"></i>',
-        cancelIcon: '<i class="fa fa-ban"></i>',
-        uploadIcon: '<i class="fa fa-upload"></i>',
-        msgValidationErrorIcon: '<i class="fa fa-exclamation-circle"></i> '
-    };
-})(window.jQuery);
-
-$("#files").fileinput({
-    theme: 'fa',
-    uploadUrl: '#',
-    allowedFileExtensions: ['docx'],
-    overwriteInitial: false,
-    slugCallback: function (filename) {
-        return filename.replace('(', '_').replace(']', '_');
-    }
-});
-
-$("#files1").fileinput({
-    theme: 'fa',
-    uploadUrl: '#',
-    allowedFileExtensions: ['docx'],
-    overwriteInitial: false,
-    slugCallback: function (filename) {
-        return filename.replace('(', '_').replace(']', '_');
-    }
+    var url1 = window.origin+"/upload1"
+    var url2 = window.origin+"/upload2"
+    
+    $("#check1_files").fileinput({
+        theme: 'fas',
+        uploadUrl: url1,
+        allowedFileExtensions: ['docx'],
+        overwriteInitial: false
+    });
+    
+    $("#check2_files").fileinput({
+        theme: 'fas',
+        uploadUrl: url2,
+        allowedFileExtensions: ['docx'],
+        overwriteInitial: false
+    }); 
 });
