@@ -144,15 +144,14 @@
                     <div class="col">
                         <h4>Note:</h4>
                         <p>Make sure to upload all the files before checking</p>
-                        <a href="">
-                            <button type="submit" class="btn btn-primary btn-block mt-3" id="check1-btn">Check Similarity</button>
-                        </a>
+                        <button class="btn btn-primary btn-block mt-3" id="check1_btn">Check Similarity</button>
+                        <div id="errorCheck1"></div>
                     </div>
                 </div>
             </div>
             
             <!-- Result -->
-            <div>
+            <div id="check1_result">
                 <h3 class="mt-3 mb-3">Result</h3>
                 <div class="row">
                     <div class="col">
@@ -243,15 +242,13 @@
                     <div class="col">
                         <h4>Note:</h4>
                         <p>Make sure to upload all the files before checking</p>
-                        <a href="">
-                            <button type="submit" class="btn btn-primary btn-block mt-3" id="check1-btn">Check Similarity</button>
-                        </a>
+                        <button class="btn btn-primary btn-block mt-3" id="check2-btn">Check Similarity</button>
                     </div>
                 </div>
             </div>
             
             <!-- Result -->
-            <div>
+            <div id="check2_result">
                 <h3 class="mt-3 mb-3">Result</h3>
                 <div class="row">
                     <div class="col">
@@ -438,7 +435,6 @@
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/font-awesome/js/all.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/fileinput.min.js') }}"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.1/themes/fas/theme.min.js"></script> -->
     <script src="{{ url_for('static', filename='bootstrap/js/additional.js') }}"></script>
     <script src="{{ url_for('static', filename='js/additional_ajax.js') }}"></script>
 </div>

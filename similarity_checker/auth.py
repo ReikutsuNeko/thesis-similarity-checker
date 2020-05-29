@@ -34,8 +34,9 @@ def register():
 
     user = User.query.filter_by(email=email).first()
 
-    if user.email == email:
-        error = "Email already exists"
+    if user is not None:
+        if user.email == email:
+            error = "Email already exists"
 
     if error is None:
         user = User(name=name, email=email, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))

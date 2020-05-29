@@ -6,6 +6,7 @@ similarity_checker/instance/
 similarity_checker/migrations/
 similarity_checker/.env
 similarity_checker/config.py
+similarity_checker/core/__pycache__/
 similarity_checker/templates/auth/
 similarity_checker/templates/base2.html
 similarity_checker/static/bootstrap/base.html

@@ -64,13 +64,3 @@ def uploadDocForSimBetweenDb():
             files.save(folderPath+'/'+files.filename)
 
     return jsonify(status="failed", error=error)
-
-@bp.route('/check1', methods=['POST'])
-def checkSimBetweenDoc():
-    error = None
-    return jsonify(status="failed", error=error)
-
-@bp.route('/check2', methods=['POST'])
-def checkSimWithDb():
-    error = None
-    return jsonify(status="failed", error=error)

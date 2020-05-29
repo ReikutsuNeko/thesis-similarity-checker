@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#loginForm").submit(function (e) { 
+    $("#loginForm").on('submit', function (e) { 
         e.preventDefault();
     
         var form_info = $(this).serializeArray();
@@ -30,7 +30,7 @@ $(document).ready(function () {
                 if (response['status'] == "failed") {
                     function showError() {
                         var err = "<span class=\"text-danger\">"+response['error']+"</span"
-                        $("#errorLogin").append(err);
+                        $("#errorLogin").html(err);
                     }
 
                     showError()
@@ -44,7 +44,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#registerForm").submit(function (e) { 
+    $("#registerForm").on('submit', function (e) { 
         e.preventDefault();
         
         var form_info = $(this).serializeArray()
@@ -75,7 +75,7 @@ $(document).ready(function () {
                 if (response['status'] == "failed") {
                     function showError() {
                         var err = "<span class=\"text-danger\">"+response['error']+"</span"
-                        $("#errorRegister").append(err);
+                        $("#errorRegister").html(err);
                     }
 
                     showError()
@@ -85,6 +85,30 @@ $(document).ready(function () {
             },
             error: function(status, statusText) {
                 console.log(statusText)
+            }
+        });
+    });
+
+    $("#check1_btn").on('click', function () {
+        var url = window.origin + "/check1"
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: url,
+            dataType: "json",
+            success: function (response) {
+                if (response['status'] === "failed") {
+                    function showError() {
+                        var err = "<span class=\"text-danger\">"+response['error']+"</span"
+                        $("#errorCheck1").html(err);
+                    }
+                    
+                    showError()
+                } else {
+                    var err = ""
+                    $("#errorCheck1").html(err);
+                }
             }
         });
     });
