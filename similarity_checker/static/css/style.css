@@ -9,3 +9,7 @@
 ul>li>a.active {
     color: black !important;
 }
+
+#check1_result, #check2_result {
+    display: none;
+}

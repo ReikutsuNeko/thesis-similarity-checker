@@ -32,7 +32,7 @@ class HistoryHeader(db.Model):
 
     historyDetails = db.relationship('HistoryDetail', backref='historyHeaders', lazy=False)
 
-    def __init__(self, user_id, user):
+    def __init__(self, user_id):
         self.user_id = user_id
 
     def serialize(self):
@@ -47,19 +47,18 @@ class HistoryDetail(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     header_id = db.Column(db.Integer, db.ForeignKey('historyHeaders.id'))
-    detail_type = db.Column(db.String(100))
-    suspect_name = db.Column(db.String(100))
-    doc_name = db.Column(db.String(100))
-    source_name = db.Column(db.String(100))
-    percentage = db.Column(db.Integer)
+    detail_type = db.Column(db.Text)
+    list_detail = db.Column(db.Text)
+
+    def __init__(self, header_id, detail_type, list_detail):
+        self.header_id = header_id
+        self.detail_type = detail_type
+        self.list_detail = list_detail
 
     def serialize(self):
         return {
             'detail_id': self.id,
             'header_id': self.header_id,
-            'detail_type': self.detailType,
-            'suspect_name': self.suspect_name,
-            'doc_name': self.doc_name,
-            'source_name': self.source_name,
-            'percentage': self.percentage
+            'detail_type': self.detail_type,
+            'list_detail': self.list_detail
         }

@@ -88,13 +88,3 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = User.query.filter_by(id=session.get('user_id')).first()
-
-# def login_required(view):
-#     @functools.wraps(view)
-#     def wrapped_view(**kwargs):
-#         if g.user is None:
-#             return redirect(url_for('auth.login'))
-
-#         return view(**kwargs)
-
-#     return wrapped_view

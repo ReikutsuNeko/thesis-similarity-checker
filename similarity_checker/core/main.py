@@ -53,20 +53,3 @@ def find_similarities_between_doc_and_dataset(model, inferred_vec_from_listOfDoc
         result[docName] = gensim_util.find_similarities(model, docContent)
 
     return result
-
-# listOfDoc = read_document('dataset example', 10)
-# model = train_document(listOfDoc, saveModel=True, saveModelDir="saved_model/", fileName="default.model")
-# model = gensim_util.load_model("saved_model/", "default.model")
-# infer_vec = infer_vectors_between_document(model, listOfDoc)
-# res = find_similarities_between_doc_and_dataset(model, infer_vec)
-
-# for checking with DB, most similar is it self, change the index to get from 2
-
-# model = train_document(listOfDoc)
-# res = find_similarities_between_document(model, listOfDoc)
-
-# for docName, listRes in res.items():
-#     print(docName+": ")
-#     for suspectDoc, acc in listRes:
-#         print("suspect doc: "+suspectDoc+" acc: "+str(acc*100)+"; ", end='')
-#     print("")

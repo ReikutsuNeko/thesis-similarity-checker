@@ -30,7 +30,7 @@ def uploadDocForSimBetweenDoc():
         folderPath = ""
 
         if session.get('user_id') is not None:
-            folderPath = 'upload_personal/'+session.get('user_id')
+            folderPath = 'upload_personal/'+str(session.get('user_id'))
         else:
             folderPath = 'upload_personal/'+session.get('randId')
 
@@ -52,7 +52,7 @@ def uploadDocForSimBetweenDb():
         folderPath = ""
 
         if session.get('user_id') is not None:
-            folderPath = 'upload/'+session.get('user_id')
+            folderPath = 'upload/'+str(session.get('user_id'))
         else:
             folderPath = 'upload/'+session.get('randId')
 
