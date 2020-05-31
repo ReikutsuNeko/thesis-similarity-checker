@@ -124,6 +124,8 @@ $(document).ready(function () {
                     $("#errorCheck1").html(err);
 
                     var thead = "<thead class=\"thead-light\"><tr><th class=\"text-center\"><span>Suspect Document</span></th><th class=\"text-center\"><span>Document Name</span></th><th class=\"text-center\"><span>Percentage</span></th></tr></thead>"
+                    var tbody = "<tbody id=\"check1_tbody\">"
+                    var tbodyClose = "</tbody>"
                     var trOpen = "<tr>"
                     var tdRowspan = "<td rowspan=\""
                     var tdRowspanCon = "\" style=\"text-align: center;\">"
@@ -206,11 +208,11 @@ $(document).ready(function () {
             url: url,
             success: function (response) {
                 function unDisabled() {
-                    $("#check1_btn").removeAttr('disabled');
+                    $("#check2_btn").removeAttr('disabled');
                 }
 
                 unDisabled()
-                
+
                 if (response['status'] === "failed") {
                     function showError() {
                         var err = "<span class=\"text-danger\">"+response['error']+"</span"

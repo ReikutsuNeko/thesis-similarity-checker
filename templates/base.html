@@ -170,7 +170,9 @@
                         <div class="col">
                             <table class="table table-hover" id="check1_table">
                                 {{ session.get('check1')['header']|safe }}
-                                {{ session.get('check1')['data']|safe }}
+                                <tbody id="check1_tbody">
+                                    {{ session.get('check1')['data']|safe }}
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -276,7 +278,9 @@
                         <div class="col">
                             <table class="table table-hover" id="check2_table">
                                 {{ session.get('check2')['header']|safe }}
-                                {{ session.get('check2')['data']|safe }}
+                                <tbody id="check2_tbody">
+                                    {{ session.get('check2')['data']|safe }}
+                                </tbody>
                             </table>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import functools
 import core.main as core_main
 import core.gensim_util as gensim_core
+import shutil
 
 from os import (
     path, mkdir
@@ -36,6 +37,8 @@ def checkSimBetweenDoc():
             finalResult[docName] = sorted(suspectTemp.items(), key = lambda kv:(kv[1], kv[0]))
             suspectTemp = {}
 
+        shutil.rmtree(folderPath)
+
         return jsonify(status="success", result=finalResult)
     else:
         error = "Please upload your files first"
@@ -65,6 +68,8 @@ def checkSimWithDb():
                 suspectTemp[suspectDoc] = acc*100
             finalResult[docName] = sorted(suspectTemp.items(), key = lambda kv:(kv[1], kv[0]))
             suspectTemp = {}
+
+        shutil.rmtree(folderPath)
 
         return jsonify(status="success", result=finalResult)
     else:
