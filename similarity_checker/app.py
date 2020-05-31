@@ -7,8 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__, instance_relative_config=True)
 
 app.config.from_mapping(
-    SECRET_KEY='changeme',
-    # DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+    SECRET_KEY='fubukidens',
 )
 
 # if test_config is None:
@@ -24,24 +23,21 @@ try:
 except OSError:
     pass
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'changeme'
+app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 import models
 
-# a simple page that says hello
 @app.route('/')
 def index():
     return redirect("/home")
 
 import auth
 import home
+import check
+import history
 app.register_blueprint(auth.bp)
 app.register_blueprint(home.bp)
-
-# def __init__(test_config=None):
-
-    
-
-#     # return app
+app.register_blueprint(check.bp)
+app.register_blueprint(history.bp)
