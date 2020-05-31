@@ -369,10 +369,11 @@ $(document).ready(function () {
         var divPanelHead = "<div class=\"panel-heading\">"
         var divOpenId = "<div id=\""
         var divCloseId = "\" class=\"panel-collapse collapse in\">"
+        var divCloseIdNoIn = "\" class=\"panel-collapse collapse\">"
         var divPanelBody = "<div class=\"panel-body\">"
         var divClose = "</div>"
-        var h3PanelTitle = "<h4 class=\"panel-title\">"
-        var h3Close = "</h4>"
+        var h3PanelTitle = "<h5 class=\"panel-title\">"
+        var h3Close = "</h5>"
         var aCollapse = "<a data-toggle=\"collapse\" class=\"text-dark text-decoration-none\" data-parent=\"#accordion\" href=\"#"
         var aCollapseClose = "\">"
         var aClose = "</a>"
@@ -396,7 +397,11 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response)
                 if (response['status'] === "failed") {
-                    
+                    function setErrorMsg() {
+                        $("#err_hist").html(response['error']);
+                    }
+
+                    setErrorMsg()
                 } else {
                     var finTemp = ""
                     var temp = ""
@@ -415,7 +420,6 @@ $(document).ready(function () {
                         + aClose
                         + h3Close
                         + divClose
-                        + divClose
                         + '<br>'
 
                         for (i in response['result'][getDate]) {
@@ -423,14 +427,14 @@ $(document).ready(function () {
                             + divCol
                             + divFloatR
                             + btnExportOpen
-                            + i
+                            + index + i
                             + btnExportMid
-                            + i
+                            + index + i
                             + btnExportClose
                             + btnDeleteOpen
-                            + i
+                            + index + i
                             + btnDeleteMid
-                            + i
+                            + index + i
                             + btnDeleteClose
                             + divClose
                             + divClose
@@ -438,20 +442,34 @@ $(document).ready(function () {
 
                             tempDetail = tempDetail
                             + tableOpen
-                            + i
+                            + index + i
                             + tClose
                             + response['result'][getDate][i]
                             + tableClose
                             + '<br>'
                         }
 
-                        detail = divOpenId
-                        + "collapse" + index
-                        + divCloseId
-                        + divPanelBody
-                        + tempDetail
-                        + divClose
-                        + divClose
+                        if (index != 0) {
+                            detail = divOpenId
+                            + "collapse" + index
+                            + divCloseIdNoIn
+                            + divPanelBody
+                            + tempDetail
+                            + divClose
+                            + divClose
+                            + divClose
+                        } else {
+                            detail = divOpenId
+                            + "collapse" + index
+                            + divCloseId
+                            + divPanelBody
+                            + tempDetail
+                            + divClose
+                            + divClose
+                            + divClose
+                        }
+
+                        tempDetail = ""
 
                         temp = temp + header + detail
                         index = index+1

@@ -116,7 +116,6 @@ def getHistory():
         error = "No History"
     else:
         for data in headerData:
-            print(data.id)
             detailDatas = HistoryDetail.query.filter_by(header_id=data.id)
             for detailData in detailDatas:
                 tblData = detailData.detail_type+""+detailData.list_detail
