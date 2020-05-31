@@ -1,1 +1,1 @@
-web: python3 similarity_checker\manage.py runserver
+web: gunicorn app:app
