@@ -1,0 +1,2 @@
+web: python3 similarity_checker\manage.py runserver
+app:app
