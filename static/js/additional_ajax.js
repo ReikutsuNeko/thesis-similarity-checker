@@ -94,10 +94,18 @@ $(document).ready(function () {
         var urlSave = window.origin + "/saveSessionTable1"
         var tableResult = ""
 
+        $("#check1_btn").attr('disabled', 'disabled');
+
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
+                function unDisabled() {
+                    $("#check1_btn").removeAttr('disabled');
+                }
+
+                unDisabled()
+
                 if (response['status'] === "failed") {
                     function showError() {
                         var err = "<span class=\"text-danger\">"+response['error']+"</span"
@@ -191,10 +199,18 @@ $(document).ready(function () {
         var url = window.origin + "/check2"
         var urlSave = window.origin + "/saveSessionTable2"
 
+        $("#check2_btn").attr('disabled', 'disabled');
+
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
+                function unDisabled() {
+                    $("#check1_btn").removeAttr('disabled');
+                }
+
+                unDisabled()
+                
                 if (response['status'] === "failed") {
                     function showError() {
                         var err = "<span class=\"text-danger\">"+response['error']+"</span"

@@ -24,6 +24,7 @@ def saveTable1Data():
     if session.get('check1') is None:
         session['check1'] = jsonData
     else:
+        session.pop('check1')
         session['check1'] = jsonData
 
     return jsonify(status="success")
@@ -69,6 +70,7 @@ def saveTable2Data():
     if session.get('check2') is None:
         session['check2'] = jsonData
     else:
+        session.pop('check2')
         session['check2'] = jsonData
 
     return jsonify(status="success")

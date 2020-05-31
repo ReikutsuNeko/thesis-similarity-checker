@@ -39,9 +39,4 @@ def find_similarities_between_doc_using_tag(model, tag):
 def find_similarities(model, inferred_vec_input_document):
     sims = model.docvecs.most_similar([inferred_vec_input_document], topn=3)
 
-    # Compare and print the most/median/least similar documents from the train corpus
-    # print(u'SIMILAR/DISSIMILAR DOCS PER MODEL %s:\n' % model)
-    # for label, index in [('MOST', 0), ('MEDIAN', len(sims)//2), ('LEAST', len(sims) - 1)]:
-    #     print(u'%s %s\n' % (label, sims[index]))
-
     return sims
