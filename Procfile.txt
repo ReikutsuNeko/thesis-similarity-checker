@@ -1,1 +1,1 @@
-web: python3 similarity_checker/manage.py runserver
+web: gunicorn -b 127.0.0.1:5000 similarity_checker:manage.py runserver
