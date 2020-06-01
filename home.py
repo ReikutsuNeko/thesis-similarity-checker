@@ -1,4 +1,6 @@
 import functools
+import mimetypes
+import shutil
 
 from os import (
     path, mkdir
@@ -12,6 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 bp = Blueprint('home', __name__, url_prefix='/')
 
 ALLOWED_EXTENSIONS = ['docx']
+ALLOWED_MIMETYPE = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -62,3 +65,33 @@ def uploadDocForSimBetweenDb():
             files.save(folderPath+'/'+files.filename)
 
     return jsonify(status="failed", error=error)
+
+@bp.route('/deleteAllFiles', methods=['POST'])
+def deleteAllFiles():
+    folderPath = ""
+
+    if session.get('user_id') is not None:
+        folderPath = 'upload_personal/'+str(session.get('user_id'))
+        
+        if path.exists(folderPath) is True:
+            shutil.rmtree(folderPath)
+
+        folderPath = 'upload/'+str(session.get('user_id'))
+
+        if path.exists(folderPath) is True:
+            shutil.rmtree(folderPath)
+    else:
+        folderPath = 'upload_personal/'+session.get('randId')
+
+        if path.exists(folderPath) is True:
+            shutil.rmtree(folderPath)
+
+        folderPath = 'upload/'+session.get('randId')
+        
+        if path.exists(folderPath) is True:
+            shutil.rmtree(folderPath)
+
+    if path.exists(folderPath) is True:
+        shutil.rmtree(folderPath)
+
+    return jsonify(status="success")
