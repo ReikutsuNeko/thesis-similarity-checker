@@ -18,14 +18,44 @@ $(document).ready(function () {
     $("#check1_files").fileinput({
         theme: 'fas',
         uploadUrl: url1,
+        showUploadedThumbs: false,
+        showUpload: true,
+        required: true,
+        minFileCount: 2,
+        fileActionSettings: {
+            showZoom: false
+        },
         allowedFileExtensions: ['docx'],
         overwriteInitial: false
+    });
+
+    $("#check1_files_upload").on('click', function () {
+        $("#check1_files").fileinput('upload')
+    });
+
+    $("#check1_files_remove").on('click', function () {
+        $("#check1_files").fileinput('clear')
     });
     
     $("#check2_files").fileinput({
         theme: 'fas',
         uploadUrl: url2,
+        showUploadedThumbs: false,
+        showUpload: true,
+        required: true,
+        minFileCount: 1,
+        fileActionSettings: {
+            showZoom: false
+        },
         allowedFileExtensions: ['docx'],
         overwriteInitial: false
-    }); 
+    });
+    
+    $("#check2_files_upload").on('click', function () {
+        $("#check2_files").fileinput('upload')
+    });
+
+    $("#check2_files_remove").on('click', function () {
+        $("#check2_files").fileinput('clear')
+    });
 });
