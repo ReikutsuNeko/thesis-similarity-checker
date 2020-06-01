@@ -193,6 +193,33 @@ $(document).ready(function () {
                         }
                     });
                 }
+            },
+            error: function (response) {
+                console.log(response['status'])
+                if (response['status'] == 500) {
+                    var urlDelete = window.origin + "/deleteAllFiles"
+
+                    function showError() {
+                        var err = "<span class=\"text-danger\">"+"1 or more files are not in proper docx format. Please upload again"+"</span"
+                        $("#errorCheck1").html(err);
+                    }
+                    
+                    showError()
+
+                    function unDisabled() {
+                        $("#check1_btn").removeAttr('disabled');
+                    }
+    
+                    unDisabled()
+
+                    $.ajax({
+                        type: "POST",
+                        url: urlDelete,
+                        success: function (response) {
+                            console.log(response)                            
+                        }
+                    });
+                }
             }
         });
     });
@@ -297,6 +324,33 @@ $(document).ready(function () {
                         dataType: "json",
                         success: function (response) {
                             console.log(response)
+                        }
+                    });
+                }
+            },
+            error: function (response) {
+                console.log(response['status'])
+                if (response['status'] == 500) {
+                    var urlDelete = window.origin + "/deleteAllFiles"
+
+                    function showError() {
+                        var err = "<span class=\"text-danger\">"+"1 or more files are not in proper docx format. Please upload again"+"</span"
+                        $("#errorCheck2").html(err);
+                    }
+                    
+                    showError()
+
+                    function unDisabled() {
+                        $("#check2_btn").removeAttr('disabled');
+                    }
+    
+                    unDisabled()
+
+                    $.ajax({
+                        type: "POST",
+                        url: urlDelete,
+                        success: function (response) {
+                            console.log(response)                            
                         }
                     });
                 }
