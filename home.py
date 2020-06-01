@@ -35,7 +35,6 @@ def uploadDocForSimBetweenDoc():
             folderPath = 'upload_personal/'+session.get('randId')
 
         if path.exists(folderPath) is True:
-            print(files.filename)
             files.save(folderPath+'/'+files.filename)
         else:
             mkdir(folderPath)
@@ -57,7 +56,6 @@ def uploadDocForSimBetweenDb():
             folderPath = 'upload/'+session.get('randId')
 
         if path.exists(folderPath) is True:
-            print(files.filename)
             files.save(folderPath+'/'+files.filename)
         else:
             mkdir(folderPath)

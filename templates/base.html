@@ -119,6 +119,60 @@
         </div>
     {% endif %}
 
+    <!-- Modal How To 1 -->
+    <div class="modal" id="modalHowTo1">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+            <h4 class="modal-title">How To Use</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <ul>
+                    <li>File must be in proper .docx format</li>
+                    <li>Minimum file to be check is 2</li>
+                    <li>You can upload files, either with upload button or upload all button</li>
+                    <li>The more files you upload, the longer it takes to detect</li>
+                </ul>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal How To 2 -->
+    <div class="modal" id="modalHowTo2">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+            <h4 class="modal-title">How To Use</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <ul>
+                    <li>File must be in proper .docx format</li>
+                    <li>Minimum file to be check is 1</li>
+                    <li>You can upload files, either with upload button or upload all button</li>
+                    <li>The more files you upload, the longer it takes to detect</li>
+                </ul>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            
+        </div>
+        </div>
+    </div>
+
     <!-- Tabbed Menu -->
     <ul class="nav nav-tabs pl-4 pr-4 bg-dark" role="tablist">
         <li class="nav-item mr-2">
@@ -142,7 +196,17 @@
         <div id="menu1" class="container-fluid tab-pane active"><br>
             <!-- Check similarity between docum -->
             <div>
-                <h3 class="mb-3">Check Similarity Between Documents</h3>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="mb-3" style="display: inline-block;">Check Similarity Between Documents</h3>
+                        <div class="float-right">
+                            <button class="btn btn-light" id="how_to1" data-toggle="modal" data-target="#modalHowTo1">
+                                <span class="fa fa-question-circle mr-1"></span>
+                                <span>How To Use</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col">
                         <form method="POST" enctype="multipart/form-data" id="check1">
@@ -153,9 +217,27 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col mb-1">
+                        <div class="float-right">
+                            <button class="btn btn-success" id="check1_files_upload">
+                                <span class="fa fa-upload mr-1"></span>
+                                <span class="text-white">Upload All</span>
+                            </button>
+                            <button class="btn btn-dark" id="check1_files_remove">
+                                <span class="fa fa-times-circle mr-1"></span>
+                                <span class="text-white">Remove All</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
                     <div class="col">
                         <h4>Note:</h4>
-                        <p>Make sure to upload all the files before checking</p>
+                        <ul>
+                            <li>Make sure to upload all the files before checking</li>
+                            <li>The similarity might contain duplicate result due to different float result that happen in backend. The result are shown are rounded to make it easy to read</li>
+                        </ul>
                         <button class="btn btn-primary btn-block mt-3" id="check1_btn">Check Similarity</button>
                         <div id="errorCheck1"></div>
                     </div>
@@ -170,7 +252,9 @@
                         <div class="col">
                             <table class="table table-hover" id="check1_table">
                                 {{ session.get('check1')['header']|safe }}
-                                {{ session.get('check1')['data']|safe }}
+                                <tbody id="check1_tbody">
+                                    {{ session.get('check1')['data']|safe }}
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -248,7 +332,17 @@
         <div id="menu2" class="container-fluid tab-pane fade"><br>
             <!-- Check similarity with database -->
             <div>
-                <h3 class="mb-3">Check Similarity With Database</h3>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="mb-3" style="display: inline-block;">Check Similarity With Database</h3>
+                        <div class="float-right">
+                            <button class="btn btn-light" id="how_to1" data-toggle="modal" data-target="#modalHowTo2">
+                                <span class="fa fa-question-circle mr-1"></span>
+                                <span>How To Use</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col">
                         <form method="POST" enctype="multipart/form-data" id="check2">
@@ -259,9 +353,27 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col mb-1">
+                        <div class="float-right">
+                            <button class="btn btn-success" id="check2_files_upload">
+                                <span class="fa fa-upload mr-1"></span>
+                                <span class="text-white">Upload All</span>
+                            </button>
+                            <button class="btn btn-dark" id="check2_files_remove">
+                                <span class="fa fa-times-circle mr-1"></span>
+                                <span class="text-white">Remove All</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
                     <div class="col">
                         <h4>Note:</h4>
-                        <p>Make sure to upload all the files before checking</p>
+                        <ul>
+                            <li>Make sure to upload all the files before checking</li>
+                            <li>The similarity might contain duplicate result due to different float result that happen in backend. The result are shown are rounded to make it easy to read</li>
+                        </ul>
                         <button class="btn btn-primary btn-block mt-3" id="check2_btn">Check Similarity</button>
                         <div id="errorCheck2"></div>
                     </div>
@@ -276,7 +388,9 @@
                         <div class="col">
                             <table class="table table-hover" id="check2_table">
                                 {{ session.get('check2')['header']|safe }}
-                                {{ session.get('check2')['data']|safe }}
+                                <tbody id="check2_tbody">
+                                    {{ session.get('check2')['data']|safe }}
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -385,5 +499,7 @@
         </div>
     {% endif %}
 
+    <br>
+    <br>
 </body>    
 </html>

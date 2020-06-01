@@ -94,10 +94,18 @@ $(document).ready(function () {
         var urlSave = window.origin + "/saveSessionTable1"
         var tableResult = ""
 
+        $("#check1_btn").attr('disabled', 'disabled');
+
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
+                function unDisabled() {
+                    $("#check1_btn").removeAttr('disabled');
+                }
+
+                unDisabled()
+
                 if (response['status'] === "failed") {
                     function showError() {
                         var err = "<span class=\"text-danger\">"+response['error']+"</span"
@@ -116,6 +124,8 @@ $(document).ready(function () {
                     $("#errorCheck1").html(err);
 
                     var thead = "<thead class=\"thead-light\"><tr><th class=\"text-center\"><span>Suspect Document</span></th><th class=\"text-center\"><span>Document Name</span></th><th class=\"text-center\"><span>Percentage</span></th></tr></thead>"
+                    var tbody = "<tbody id=\"check1_tbody\">"
+                    var tbodyClose = "</tbody>"
                     var trOpen = "<tr>"
                     var tdRowspan = "<td rowspan=\""
                     var tdRowspanCon = "\" style=\"text-align: center;\">"
@@ -191,10 +201,18 @@ $(document).ready(function () {
         var url = window.origin + "/check2"
         var urlSave = window.origin + "/saveSessionTable2"
 
+        $("#check2_btn").attr('disabled', 'disabled');
+
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
+                function unDisabled() {
+                    $("#check2_btn").removeAttr('disabled');
+                }
+
+                unDisabled()
+
                 if (response['status'] === "failed") {
                     function showError() {
                         var err = "<span class=\"text-danger\">"+response['error']+"</span"

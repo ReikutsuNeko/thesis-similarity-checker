@@ -1,6 +1,7 @@
 import functools
 import core.main as core_main
 import core.gensim_util as gensim_core
+import shutil
 
 from os import (
     path, mkdir
@@ -27,14 +28,21 @@ def checkSimBetweenDoc():
 
     if path.exists(folderPath) is True:
         listOfDoc = core_main.read_document(folderPath)
+
+        if len(listOfDoc) < 2:
+            error = "You have to upload 2 or more files"
+            return jsonify(status="failed", error=error)
+
         model = core_main.train_document(listOfDoc)
         result = core_main.find_similarities_between_document(model, listOfDoc)
-        
+
         for docName, listRes in result.items():
             for suspectDoc, acc in listRes:
                 suspectTemp[suspectDoc] = acc*100
-            finalResult[docName] = sorted(suspectTemp.items(), key = lambda kv:(kv[1], kv[0]))
+            finalResult[docName] = sorted(suspectTemp.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)
             suspectTemp = {}
+
+        shutil.rmtree(folderPath)
 
         return jsonify(status="success", result=finalResult)
     else:
@@ -63,8 +71,10 @@ def checkSimWithDb():
         for docName, listRes in result.items():
             for suspectDoc, acc in listRes:
                 suspectTemp[suspectDoc] = acc*100
-            finalResult[docName] = sorted(suspectTemp.items(), key = lambda kv:(kv[1], kv[0]))
+            finalResult[docName] = sorted(suspectTemp.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)
             suspectTemp = {}
+
+        shutil.rmtree(folderPath)
 
         return jsonify(status="success", result=finalResult)
     else:
