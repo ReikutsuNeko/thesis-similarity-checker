@@ -119,60 +119,6 @@
         </div>
     {% endif %}
 
-    <!-- Modal How To 1 -->
-    <div class="modal" id="modalHowTo1">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        
-            <div class="modal-header">
-            <h4 class="modal-title">How To Use</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <ul>
-                    <li>File must be in proper .docx format</li>
-                    <li>Minimum file to be check is 2</li>
-                    <li>You can upload files, either with upload button or upload all button</li>
-                    <li>The more files you upload, the longer it takes to detect</li>
-                </ul>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-            
-        </div>
-        </div>
-    </div>
-
-    <!-- Modal How To 2 -->
-    <div class="modal" id="modalHowTo2">
-        <div class="modal-dialog">
-        <div class="modal-content">
-        
-            <div class="modal-header">
-            <h4 class="modal-title">How To Use</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <ul>
-                    <li>File must be in proper .docx format</li>
-                    <li>Minimum file to be check is 1</li>
-                    <li>You can upload files, either with upload button or upload all button</li>
-                    <li>The more files you upload, the longer it takes to detect</li>
-                </ul>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-            
-        </div>
-        </div>
-    </div>
-
     <!-- Tabbed Menu -->
     <ul class="nav nav-tabs pl-4 pr-4 bg-dark" role="tablist">
         <li class="nav-item mr-2">
@@ -199,15 +145,18 @@
                 <div class="row">
                     <div class="col">
                         <h3 class="mb-3" style="display: inline-block;">Check Similarity Between Documents</h3>
-                        <div class="float-right">
-                            <button class="btn btn-light" id="how_to1" data-toggle="modal" data-target="#modalHowTo1">
-                                <span class="fa fa-question-circle mr-1"></span>
-                                <span>How To Use</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
+                    <!-- Div for document to be checked -->
+                    <div class="col">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input id="check0_files" name="check0_files" type="file" multiple data-overwrite-initial="false">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Div for dataset -->
                     <div class="col">
                         <form method="POST" enctype="multipart/form-data" id="check1">
                             <div class="form-group">
@@ -217,8 +166,28 @@
                     </div>
                 </div>
                 <div class="row">
+                    <!-- Button for document to be checked -->
                     <div class="col mb-1">
                         <div class="float-right">
+                            <button class="btn btn-success" id="check0_files_upload">
+                                <span class="fa fa-upload mr-1"></span>
+                                <span class="text-white">Upload All</span>
+                            </button>
+                            <button class="btn btn-dark" id="check0_files_remove">
+                                <span class="fa fa-times-circle mr-1"></span>
+                                <span class="text-white">Remove All</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Button for dataset -->
+                    <div class="col mb-1">
+                        <div class="float-right">
+                            <span id="err_training" class="mr-3" id="err_training"></span>
+                            <button class="btn btn-primary" id="check1_files_train">
+                                <span class="fa fa-spinner fa-pulse fa-fw" id="spinner_check0"></span>
+                                <span class="fa fa-clone mr-1"></span>
+                                <span class="text-white">Train Document</span>
+                            </button>
                             <button class="btn btn-success" id="check1_files_upload">
                                 <span class="fa fa-upload mr-1"></span>
                                 <span class="text-white">Upload All</span>
@@ -235,11 +204,17 @@
                     <div class="col">
                         <h4>Note:</h4>
                         <ul>
+                            <li>File must be in proper <span class="fa fa-file-word"></span> .docx format</li>
+                            <li>Max filesize to be uploaded is 1 mb</li>
+                            <li>Minimum files to make a dataset is 2</li>
+                            <li>Please press Train Document first and wait until the training is done before checking similarity</li>
+                            <li>You can upload files, either with <span class="fa fa-upload"></span> button or upload all button</li>
+                            <li>The more files you upload, the longer it takes to detect</li>
                             <li>Make sure to upload all the files before checking</li>
                             <li>The similarity might contain duplicate result due to different float result that happen in backend. The result are shown are rounded to make it easy to read</li>
                         </ul>
-                        <button class="btn btn-primary btn-block mt-3" id="check1_btn">Check Similarity</button>
-                        <div id="errorCheck1"></div>
+                        <button class="btn btn-primary btn-block mt-3" id="check1_btn"><span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_check1"></span>Check Similarity</button>
+                        <div id="errorCheck1" class="mt-1"></div>
                     </div>
                 </div>
             </div>
@@ -262,11 +237,13 @@
                         <div class="col">
                             <div class="float-right">
                                 <button class="btn btn-success" id="export1_btn">
+                                    <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_export1"></span>
                                     <span class="fa fa-file-download mr-1"></span>
                                     <span>Export as PDF</span>
                                 </button>
                                 {% if g.user %}
                                     <button class="btn btn-primary" id="save1_btn">
+                                        <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_save1"></span>
                                         <span class="fa fa-history mr-1"></span>
                                         <span>Save to History</span>
                                     </button>
@@ -307,11 +284,13 @@
                         <div class="col">
                             <div class="float-right">
                                 <button class="btn btn-success" id="export1_btn">
+                                    <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_export1"></span>
                                     <span class="fa fa-file-download mr-1"></span>
                                     <span>Export as PDF</span>
                                 </button>
                                 {% if g.user %}
                                     <button class="btn btn-primary" id="save1_btn">
+                                        <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_save1"></span>
                                         <span class="fa fa-history mr-1"></span>
                                         <span>Save to History</span>
                                     </button>
@@ -335,12 +314,6 @@
                 <div class="row">
                     <div class="col">
                         <h3 class="mb-3" style="display: inline-block;">Check Similarity With Database</h3>
-                        <div class="float-right">
-                            <button class="btn btn-light" id="how_to1" data-toggle="modal" data-target="#modalHowTo2">
-                                <span class="fa fa-question-circle mr-1"></span>
-                                <span>How To Use</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -371,11 +344,16 @@
                     <div class="col">
                         <h4>Note:</h4>
                         <ul>
+                            <li>File must be in proper <span class="fa fa-file-word"></span> .docx format</li>
+                            <li>Maximum file size to be uploaded is 1 mb</li>
+                            <li>Minimum file to be check is 1</li>
+                            <li>You can upload files, either with <span class="fa fa-upload"></span> button or upload all button</li>
+                            <li>The more files you upload, the longer it takes to detect</li>
                             <li>Make sure to upload all the files before checking</li>
                             <li>The similarity might contain duplicate result due to different float result that happen in backend. The result are shown are rounded to make it easy to read</li>
                         </ul>
-                        <button class="btn btn-primary btn-block mt-3" id="check2_btn">Check Similarity</button>
-                        <div id="errorCheck2"></div>
+                        <button class="btn btn-primary btn-block mt-3" id="check2_btn"><span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_check2"></span>Check Similarity</button>
+                        <div id="errorCheck2" class="mt-1"></div>
                     </div>
                 </div>
             </div>
@@ -398,11 +376,13 @@
                         <div class="col">
                             <div class="float-right">
                                 <button class="btn btn-success" id="export2_btn">
+                                    <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_export2"></span>
                                     <span class="fa fa-file-download mr-1"></span>
                                     <span>Export as PDF</span>
                                 </button>
                                 {% if g.user %}
                                     <button class="btn btn-primary" id="save2_btn">
+                                        <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_save2"></span>
                                         <span class="fa fa-history mr-1"></span>
                                         <span>Save to History</span>
                                     </button>
@@ -443,11 +423,13 @@
                         <div class="col">
                             <div class="float-right">
                                 <button class="btn btn-success" id="export2_btn">
+                                    <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_export2"></span>
                                     <span class="fa fa-file-download mr-1"></span>
                                     <span>Export as PDF</span>
                                 </button>
                                 {% if g.user %}
                                     <button class="btn btn-primary" id="save2_btn">
+                                        <span class="fa fa-spinner fa-pulse fa-fw mr-2" id="spinner_save2"></span>
                                         <span class="fa fa-history mr-1"></span>
                                         <span>Save to History</span>
                                     </button>
@@ -468,6 +450,20 @@
         <div id="history" class="container-fluid tab-pane fade"><br>
             <h3>History</h3>
             <br>
+            <div class="text-center" id="history_spinner">
+                <div class="row">
+                    <div class="col">
+                        <i <span class="fa fa-spinner fa-pulse fa-3x fa-fw mb-3"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="m-auto">
+                            <h4>Please Wait</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- History table -->
             <div id="history_sect"></div>
             <h3 id="err_hist"></h3>
@@ -501,5 +497,13 @@
 
     <br>
     <br>
+    <br>
+    
+    <a href="https://forms.gle/AgfoUYXuwNTNX7yH8/" target="_blank">
+        <button type="button" class="btn bg-dark text-white" id="myBtn">
+            <span class="fa fa-comment mr-2"></span>
+            <span>Please fill my questionnaire about your experience</span>
+        </button>
+    </a>
 </body>    
 </html>

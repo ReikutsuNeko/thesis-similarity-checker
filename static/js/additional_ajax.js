@@ -89,17 +89,76 @@ $(document).ready(function () {
         });
     });
 
+    $("#check1_files_train").on('click', function () {
+        var url = window.origin + "/trainCheck1"
+
+        $("#check1_files_train").attr('disabled', 'disabled');
+        $("#spinner_check0").css('display', 'inline');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            success: function (response) {
+                function unDisabled() {
+                    $("#check1_files_train").removeAttr('disabled');
+                }
+
+                unDisabled()
+
+                function setErr() {
+                    $("#err_training").html('Train Success!');
+                }
+
+                setErr()
+
+                function setSpinner() {
+                    $("#spinner_check0").css('display', 'none');
+                }
+
+                setSpinner
+            },
+            error: function (response) {
+                function setErr() {
+                    var str = "<span class=\"text-danger\">"+response['responseJSON']['error']+"</span>"
+
+                    $("#err_training").html(str);
+                }
+
+                setErr()
+
+                function unDisabled() {
+                    $("#check1_files_train").removeAttr('disabled');
+                }
+
+                unDisabled()
+
+                function setSpinner() {
+                    $("#spinner_check0").css('display', 'none');
+                }
+
+                setSpinner()
+            }
+        });
+    });
+
     $("#check1_btn").on('click', function () {
         var url = window.origin + "/check1"
         var urlSave = window.origin + "/saveSessionTable1"
         var tableResult = ""
 
         $("#check1_btn").attr('disabled', 'disabled');
+        $("#spinner_check1").css('display', 'inline');
 
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
+                function setSpinner() {
+                    $("#spinner_check1").css('display', 'none');
+                }
+
+                setSpinner()
+
                 function unDisabled() {
                     $("#check1_btn").removeAttr('disabled');
                 }
@@ -122,6 +181,7 @@ $(document).ready(function () {
 
                     var err = ""
                     $("#errorCheck1").html(err);
+                    $("#err_training").html(err);
 
                     var thead = "<thead class=\"thead-light\"><tr><th class=\"text-center\"><span>Suspect Document</span></th><th class=\"text-center\"><span>Document Name</span></th><th class=\"text-center\"><span>Percentage</span></th></tr></thead>"
                     var tbody = "<tbody id=\"check1_tbody\">"
@@ -195,6 +255,12 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
+                function setSpinner() {
+                    $("#spinner_check1").css('display', 'none');
+                }
+
+                setSpinner()
+
                 console.log(response['status'])
                 if (response['status'] == 500) {
                     var urlDelete = window.origin + "/deleteAllFiles"
@@ -229,11 +295,18 @@ $(document).ready(function () {
         var urlSave = window.origin + "/saveSessionTable2"
 
         $("#check2_btn").attr('disabled', 'disabled');
+        $("#spinner_check2").css('display', 'inline');
 
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
+                function setSpinner() {
+                    $("#spinner_check2").css('display', 'none');
+                }
+
+                setSpinner()
+
                 function unDisabled() {
                     $("#check2_btn").removeAttr('disabled');
                 }
@@ -329,6 +402,12 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
+                function setSpinner() {
+                    $("#spinner_check2").css('display', 'none');
+                }
+
+                setSpinner()
+
                 console.log(response['status'])
                 if (response['status'] == 500) {
                     var urlDelete = window.origin + "/deleteAllFiles"
@@ -358,7 +437,7 @@ $(document).ready(function () {
         });
     });
 
-    function exportToPdf(tableName) {
+    function exportToPdf(tableName, spinnerName, btnName) {
         html2canvas(document.getElementById(tableName), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
@@ -371,24 +450,35 @@ $(document).ready(function () {
                 pdfMake.createPdf(docDefinition).download("Table.pdf");
             }
         });
+        $(spinnerName).css('display', 'none');
+        $(btnName).removeAttr('disabled');
     }
 
     $("#export1_btn").on('click', function() {
-        exportToPdf('check1_table')
+        $("#export1_btn").attr('disabled', 'disabled');
+        $("#spinner_export1").css('display', 'inline');
+        exportToPdf('check1_table', "#spinner_export1", "#export1_btn")
     });
 
     $("#export2_btn").on('click', function() {
-        exportToPdf('check2_table')
+        $("#export2_btn").attr('disabled', 'disabled');
+        $("#spinner_export2").css('display', 'inline');
+        exportToPdf('check2_table', "#spinner_export2", "#export2_btn")
     });
 
     $("#save1_btn").on('click', function () {
         var url = window.origin + "/saveTable1ToDb"
+
+        $("#save1_btn").attr('disabled', 'disabled');
+        $("#spinner_save1").css('display', 'inline');
 
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
                 console.log(response)
+                $("#save1_btn").removeAttr('disabled');
+                $("#spinner_save1").css('display', 'none');
                 $("#save1_btn").css('display', 'none');
             }
         });
@@ -397,11 +487,16 @@ $(document).ready(function () {
     $("#save2_btn").on('click', function () {
         var url = window.origin + "/saveTable2ToDb"
 
+        $("#save2_btn").attr('disabled', 'disabled');
+        $("#spinner_save2").css('display', 'inline');
+
         $.ajax({
             type: "POST",
             url: url,
             success: function (response) {
                 console.log(response)
+                $("#save2_btn").removeAttr('disabled');
+                $("#spinner_save2").css('display', 'none');
                 $("#save2_btn").css('display', 'none');
             }
         });
@@ -445,10 +540,10 @@ $(document).ready(function () {
         var divPanelBody = "<div class=\"panel-body\">"
         var divClose = "</div>"
         var h3PanelTitle = "<h5 class=\"panel-title\">"
-        var h3Close = "</h5>"
+        var h3Close = "</button></h5>"
         var aCollapse = "<a data-toggle=\"collapse\" class=\"text-dark text-decoration-none\" data-parent=\"#accordion\" href=\"#"
-        var aCollapseClose = "\">"
-        var aClose = "</a>"
+        var aCollapseClose = "\"><button class=\"btn btn-block btn-light\">"
+        var aClose = "</button></a>"
         var tableOpen = "<table class=\"table table-hover\" id=\"nama_tabel"
         var tClose = "\">"
         var tableClose = "</table>"
@@ -467,6 +562,12 @@ $(document).ready(function () {
             type: "POST",
             url: url,
             success: function (response) {
+                function hideSpinner() {
+                    $("#history_spinner").css('display', 'none');
+                }
+
+                hideSpinner()
+
                 console.log(response)
                 if (response['status'] === "failed") {
                     function setErrorMsg() {

@@ -36,7 +36,7 @@ def infer_vectors(model, listOfWord):
 def find_similarities_between_doc_using_tag(model, tag):
     return model.docvecs.most_similar(str(tag), topn=3)
 
-def find_similarities(model, inferred_vec_input_document):
-    sims = model.docvecs.most_similar([inferred_vec_input_document], topn=3)
+def find_similarities(model, inferred_vec_input_document, topn=3):
+    sims = model.docvecs.most_similar([inferred_vec_input_document], topn=topn)
 
     return sims

@@ -46,10 +46,10 @@ def find_similarities_between_document(model, listOfDoc):
 
     return result
 
-def find_similarities_between_doc_and_dataset(model, inferred_vec_from_listOfDoc):
+def find_similarities_between_doc_and_dataset(model, inferred_vec_from_listOfDoc, topn=3):
     result = {}
 
     for docName, docContent in inferred_vec_from_listOfDoc.items():
-        result[docName] = gensim_util.find_similarities(model, docContent)
+        result[docName] = gensim_util.find_similarities(model, docContent, topn=topn)
 
     return result
