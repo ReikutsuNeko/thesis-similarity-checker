@@ -12,9 +12,34 @@ $(document).ready(function () {
  * https://github.com/kartik-v/bootstrap-fileinput/blob/master/LICENSE.md
  */!function(a){"use strict";a.fn.fileinputThemes.fas={fileActionSettings:{removeIcon:'<i class="fas fa-trash-alt"></i>',uploadIcon:'<i class="fas fa-upload"></i>',uploadRetryIcon:'<i class="fas fa-redo-alt"></i>',downloadIcon:'<i class="fas fa-download"></i>',zoomIcon:'<i class="fas fa-search-plus"></i>',dragIcon:'<i class="fas fa-arrows-alt"></i>',indicatorNew:'<i class="fas fa-plus-circle text-warning"></i>',indicatorSuccess:'<i class="fas fa-check-circle text-success"></i>',indicatorError:'<i class="fas fa-exclamation-circle text-danger"></i>',indicatorLoading:'<i class="fas fa-hourglass text-muted"></i>'},layoutTemplates:{fileIcon:'<i class="fas fa-file kv-caption-icon"></i> '},previewZoomButtonIcons:{prev:'<i class="fas fa-caret-left fa-lg"></i>',next:'<i class="fas fa-caret-right fa-lg"></i>',toggleheader:'<i class="fas fa-fw fa-arrows-alt-v"></i>',fullscreen:'<i class="fas fa-fw fa-arrows-alt"></i>',borderless:'<i class="fas fa-fw fa-external-link-alt"></i>',close:'<i class="fas fa-fw fa-times"></i>'},previewFileIcon:'<i class="fas fa-file"></i>',browseIcon:'<i class="fas fa-folder-open"></i>',removeIcon:'<i class="fas fa-trash-alt"></i>',cancelIcon:'<i class="fas fa-ban"></i>',pauseIcon:'<i class="fas fa-pause"></i>',uploadIcon:'<i class="fas fa-upload"></i>',msgValidationErrorIcon:'<i class="fas fa-exclamation-circle"></i> '}}(window.jQuery);
 
+    var url0 = window.origin+"/upload0"
     var url1 = window.origin+"/upload1"
     var url2 = window.origin+"/upload2"
     
+    $("#check0_files").fileinput({
+        theme: 'fas',
+        uploadUrl: url0,
+        showUploadedThumbs: false,
+        showUpload: true,
+        required: true,
+        minFileCount: 1,
+        maxFileSize: 1000,
+        dropZoneTitle: "Drag & drop document here to be checked",
+        fileActionSettings: {
+            showZoom: false
+        },
+        allowedFileExtensions: ['docx'],
+        overwriteInitial: false
+    });
+
+    $("#check0_files_upload").on('click', function () {
+        $("#check0_files").fileinput('upload')
+    });
+
+    $("#check0_files_remove").on('click', function () {
+        $("#check0_files").fileinput('clear')
+    });
+
     $("#check1_files").fileinput({
         theme: 'fas',
         uploadUrl: url1,
@@ -22,6 +47,8 @@ $(document).ready(function () {
         showUpload: true,
         required: true,
         minFileCount: 2,
+        maxFileSize: 1000,
+        dropZoneTitle: "Drag & drop document here to make a dataset",
         fileActionSettings: {
             showZoom: false
         },
@@ -44,6 +71,8 @@ $(document).ready(function () {
         showUpload: true,
         required: true,
         minFileCount: 1,
+        maxFileSize: 1000,
+        dropZoneTitle: "Drag & drop document here to be checked",
         fileActionSettings: {
             showZoom: false
         },

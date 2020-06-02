@@ -24,6 +24,27 @@ def allowed_file(filename):
 def index():
     return render_template('base.html')
 
+@bp.route('/upload0', methods=['POST'])
+def uploadDocForTraining():
+    error = None
+    files = request.files['check0_files']
+
+    if files and allowed_file(files.filename):
+        folderPath = ""
+
+        if session.get('user_id') is not None:
+            folderPath = 'upload_personal/'+str(session.get('user_id'))
+        else:
+            folderPath = 'upload_personal/'+session.get('randId')
+
+        if path.exists(folderPath) is True:
+            files.save(folderPath+'/'+files.filename)
+        else:
+            mkdir(folderPath)
+            files.save(folderPath+'/'+files.filename)
+
+    return jsonify(status="failed", error=error)
+
 @bp.route('/upload1', methods=['POST'])
 def uploadDocForSimBetweenDoc():
     error = None
@@ -33,9 +54,9 @@ def uploadDocForSimBetweenDoc():
         folderPath = ""
 
         if session.get('user_id') is not None:
-            folderPath = 'upload_personal/'+str(session.get('user_id'))
+            folderPath = 'upload_personal/temp_train/'+str(session.get('user_id'))
         else:
-            folderPath = 'upload_personal/'+session.get('randId')
+            folderPath = 'upload_personal/temp_train/'+session.get('randId')
 
         if path.exists(folderPath) is True:
             files.save(folderPath+'/'+files.filename)
@@ -87,7 +108,7 @@ def deleteAllFiles():
             shutil.rmtree(folderPath)
 
         folderPath = 'upload/'+session.get('randId')
-        
+
         if path.exists(folderPath) is True:
             shutil.rmtree(folderPath)
 
