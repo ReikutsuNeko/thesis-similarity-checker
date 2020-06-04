@@ -115,7 +115,7 @@ $(document).ready(function () {
                     $("#spinner_check0").css('display', 'none');
                 }
 
-                setSpinner
+                setSpinner()
             },
             error: function (response) {
                 function setErr() {
